@@ -30,6 +30,12 @@ class hubot::package (
     require  => Class['ruby::dev'],
   }
 
+  file { $install_dir:
+      ensure => directory,
+      owner  => $hubot::daemon_user,
+      group  => $hubot::daemon_user,
+      mode   => '0755'
+  } ->
   class { 'github::known_hosts': } ->
   exec { 'download hubot via git':
     command     => "git clone ${git_source} ${install_dir} -b ${git_branch}",
